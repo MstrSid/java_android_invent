@@ -4,6 +4,7 @@
   <string name="txt_condition">Состояние:</string>
   <string name="txt_add_item">add item</string>
   <string name="txt_label">Название:</string>
+  <string name="btn_add_txt">Добавить</string>
   <array name="conditions">
     <item>Склад</item>
     <item>Выдан</item>

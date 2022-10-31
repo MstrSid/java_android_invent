@@ -7,32 +7,27 @@
   android:padding="8dp"
   tools:context=".AddItemActivity">
 
+  <Button
+    android:id="@+id/btnAdd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:backgroundTint="@android:color/holo_green_light"
+    android:text="@string/btn_add_txt"
+    android:textSize="22sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/spCondition" />
+
   <Spinner
     android:id="@+id/spCondition"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="10dp"
     android:entries="@array/conditions"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
-  <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/tilName"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <com.google.android.material.textfield.TextInputEditText
-      android:id="@+id/tiEdtName"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:backgroundTint="@color/white"
-      android:hint="@string/txt_label"
-      android:textSize="20sp" />
-  </com.google.android.material.textfield.TextInputLayout>
+    app:layout_constraintTop_toBottomOf="@+id/tilInvent" />
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/tilInvent"
@@ -49,6 +44,22 @@
       android:layout_height="wrap_content"
       android:backgroundTint="@color/white"
       android:hint="@string/txt_inv_number"
+      android:textSize="20sp" />
+  </com.google.android.material.textfield.TextInputLayout>
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/tiEdtName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:backgroundTint="@color/white"
+      android:hint="@string/txt_label"
       android:textSize="20sp" />
   </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
