@@ -1,0 +1,13 @@
+<resources>
+  <string name="app_name">Tech Inventory</string>
+  <string name="txt_inv_number">Инв. номер:</string>
+  <string name="txt_condition">Состояние:</string>
+  <string name="txt_add_item">add item</string>
+  <string name="txt_label">Название:</string>
+  <array name="conditions">
+    <item>Склад</item>
+    <item>Выдан</item>
+    <item>Ремонт</item>
+    <item>Списан</item>
+  </array>
+</resources>
