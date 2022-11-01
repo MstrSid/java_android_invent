@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
   private FloatingActionButton fabAdd;
   private TechRVAdapter techRVAdapter;
   private TechDatabase techDatabase;
-  private final Handler handler = new Handler(Looper.getMainLooper());
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
     techRVAdapter = new TechRVAdapter();
     rcvMain.setAdapter(techRVAdapter);
     rcvMain.setLayoutManager(new LinearLayoutManager(this));
+    techDatabase.techDAO().getItems().observe(this, new Observer<List<TechItem>>() {
+      @Override
+      public void onChanged(List<TechItem> techItems) {
+        techRVAdapter.setTechItems(techItems);
+        techRVAdapter.notifyDataSetChanged();
+      }
+    });
 
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
         new SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -48,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
             TechItem techItem = techRVAdapter.getTechItems().get(position);
             Thread thread = new Thread(() -> {
               techDatabase.techDAO().remove(techItem.getId());
-              handler.post(() -> {
-                showTechItems();
-              });
             });
             thread.start();
           }
@@ -61,23 +65,6 @@ public class MainActivity extends AppCompatActivity {
     fabAdd.setOnClickListener(view -> {
       startActivity(AddItemActivity.newIntent(MainActivity.this));
     });
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    showTechItems();
-  }
-
-  private void showTechItems() {
-    Thread thread = new Thread(() -> {
-      List<TechItem> techItemList = techDatabase.techDAO().getItems();
-      handler.post(() -> {
-        techRVAdapter.setTechItems(techItemList);
-        techRVAdapter.notifyDataSetChanged();
-      });
-    });
-    thread.start();
   }
 
   private void initViews() {

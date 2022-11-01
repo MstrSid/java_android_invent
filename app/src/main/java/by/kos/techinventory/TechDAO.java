@@ -1,5 +1,6 @@
 package by.kos.techinventory;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -15,6 +16,6 @@ interface TechDAO {
   void remove(int id);
 
   @Query("SELECT * FROM tech")
-  List<TechItem> getItems();
+  LiveData<List<TechItem>> getItems();
 
 }
