@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import by.kos.techinventory.TechRVAdapter.TechViewHolder;
 import java.util.ArrayList;
@@ -44,7 +45,24 @@ public class TechRVAdapter extends RecyclerView.Adapter<TechViewHolder> {
     String[] arrayConditions = holder.itemView.getContext().getResources()
         .getStringArray(R.array.conditions);
     holder.tvConditionData.setText(arrayConditions[techItem.getCondition()]);
+    int resColorId;
+    switch (techItem.getCondition()) {
+      case 0:
+        resColorId = android.R.color.holo_green_light;
+        break;
+      case 1:
+        resColorId = android.R.color.holo_orange_light;
+        break;
+      case 2:
+        resColorId = android.R.color.holo_red_light;
+        break;
+      default:
+        resColorId = android.R.color.darker_gray;
+        break;
 
+    }
+    int color = ContextCompat.getColor(holder.itemView.getContext(), resColorId);
+    holder.tvConditionData.setBackgroundColor(color);
     holder.itemView.setOnClickListener(view -> {
       if (onTechClickListener != null) {
         onTechClickListener.onTechClick(techItem);
