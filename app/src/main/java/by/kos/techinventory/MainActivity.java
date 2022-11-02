@@ -1,9 +1,5 @@
 package by.kos.techinventory;
 
-import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,19 +17,19 @@ public class MainActivity extends AppCompatActivity {
   private RecyclerView rcvMain;
   private FloatingActionButton fabAdd;
   private TechRVAdapter techRVAdapter;
-  private TechDatabase techDatabase;
+  private MainViewModel mainViewModel;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    techDatabase = TechDatabase.getInstance(getApplication());
+    mainViewModel = new MainViewModel(getApplication());
     initViews();
 
     techRVAdapter = new TechRVAdapter();
     rcvMain.setAdapter(techRVAdapter);
     rcvMain.setLayoutManager(new LinearLayoutManager(this));
-    techDatabase.techDAO().getItems().observe(this, new Observer<List<TechItem>>() {
+    mainViewModel.getTechItems().observe(this, new Observer<List<TechItem>>() {
       @Override
       public void onChanged(List<TechItem> techItems) {
         techRVAdapter.setTechItems(techItems);
@@ -53,10 +49,7 @@ public class MainActivity extends AppCompatActivity {
           public void onSwiped(@NonNull ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             TechItem techItem = techRVAdapter.getTechItems().get(position);
-            Thread thread = new Thread(() -> {
-              techDatabase.techDAO().remove(techItem.getId());
-            });
-            thread.start();
+            mainViewModel.remove(techItem);
           }
         });
 
