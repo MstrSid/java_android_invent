@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,15 +28,19 @@ public class AddItemActivity extends AppCompatActivity {
   private TextInputEditText tiEdtInvent;
 
   private Button btnAdd;
-  private TechDatabase techDatabase;
-  private final Handler handler = new Handler(Looper.getMainLooper());
+  private AddItemViewModel addItemViewModel;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_item);
-    techDatabase = TechDatabase.getInstance(getApplication());
+    addItemViewModel = new ViewModelProvider(this).get(AddItemViewModel.class);
+    addItemViewModel.getShouldCloseScreen().observe(this, shouldClose -> {
+      if (shouldClose) {
+        finish();
+      }
+    });
     initViews();
 
     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_item,
@@ -55,13 +61,7 @@ public class AddItemActivity extends AppCompatActivity {
     String textInvent = tiEdtInvent.getText().toString();
     if (!textName.isEmpty() && !textInvent.isEmpty()) {
       int conditionIndex = getCondition();
-      Thread thread = new Thread(() -> {
-        techDatabase.techDAO().add(new TechItem(textName, textInvent, conditionIndex));
-        handler.post(() -> {
-          finish();
-        });
-      });
-      thread.start();
+      addItemViewModel.saveTech(new TechItem(textName, textInvent, conditionIndex));
     } else {
       Snackbar.make(view, R.string.txt_error_empty, Snackbar.LENGTH_SHORT).show();
     }

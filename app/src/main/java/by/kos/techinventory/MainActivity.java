@@ -1,15 +1,18 @@
 package by.kos.techinventory;
 
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,22 +22,20 @@ public class MainActivity extends AppCompatActivity {
   private TechRVAdapter techRVAdapter;
   private MainViewModel mainViewModel;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    mainViewModel = new MainViewModel(getApplication());
+    mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
     initViews();
 
     techRVAdapter = new TechRVAdapter();
     rcvMain.setAdapter(techRVAdapter);
     rcvMain.setLayoutManager(new LinearLayoutManager(this));
-    mainViewModel.getTechItems().observe(this, new Observer<List<TechItem>>() {
-      @Override
-      public void onChanged(List<TechItem> techItems) {
-        techRVAdapter.setTechItems(techItems);
-        techRVAdapter.notifyDataSetChanged();
-      }
+    mainViewModel.getTechItems().observe(this, techItems -> {
+      techRVAdapter.setTechItems(techItems);
+      techRVAdapter.notifyDataSetChanged();
     });
 
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(

@@ -1,9 +1,12 @@
 package by.kos.techinventory;
 
 import android.app.Application;
+import android.os.Handler;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
@@ -22,7 +25,7 @@ public class MainViewModel extends AndroidViewModel {
     thread.start();
   }
 
-  public LiveData<List<TechItem>> getTechItems(){
+  public LiveData<List<TechItem>> getTechItems() {
     return techDatabase.techDAO().getItems();
   }
 }
