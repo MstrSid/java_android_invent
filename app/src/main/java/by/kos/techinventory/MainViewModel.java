@@ -18,10 +18,20 @@ public class MainViewModel extends AndroidViewModel {
 
   private final TechDatabase techDatabase;
   private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+  private MutableLiveData<List<TechItem>> techItems = new MutableLiveData<>();
 
   public MainViewModel(@NonNull Application application) {
     super(application);
     techDatabase = TechDatabase.getInstance(application);
+  }
+
+  public void refreshList() {
+    Disposable disposable = techDatabase.techDAO().getItems().subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(techItemsFromDB -> {
+          techItems.setValue(techItemsFromDB);
+        });
+
+    compositeDisposable.add(disposable);
   }
 
   public void remove(TechItem techItem) {
@@ -31,6 +41,7 @@ public class MainViewModel extends AndroidViewModel {
         .subscribe(() -> {
           Log.d("mainViewModel",
               String.format("removed: %s, %s", techItem.getName(), techItem.getInvent()));
+          refreshList();
         });
     compositeDisposable.add(disposable);
   }
@@ -41,7 +52,8 @@ public class MainViewModel extends AndroidViewModel {
     compositeDisposable.dispose();
   }
 
+
   public LiveData<List<TechItem>> getTechItems() {
-    return techDatabase.techDAO().getItems();
+    return techItems;
   }
 }

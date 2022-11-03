@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 import java.util.List;
 
 @Dao
@@ -17,6 +18,6 @@ interface TechDAO {
   Completable remove(int id);
 
   @Query("SELECT * FROM tech")
-  LiveData<List<TechItem>> getItems();
+  Single<List<TechItem>> getItems();
 
 }
