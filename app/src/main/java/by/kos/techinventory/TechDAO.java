@@ -14,7 +14,7 @@ interface TechDAO {
   Completable add(TechItem techItem);
 
   @Query("DELETE FROM tech WHERE id = :id")
-  void remove(int id);
+  Completable remove(int id);
 
   @Query("SELECT * FROM tech")
   LiveData<List<TechItem>> getItems();
