@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AddItemViewModel extends AndroidViewModel {
 
@@ -21,10 +23,12 @@ public class AddItemViewModel extends AndroidViewModel {
   }
 
   public void saveTech(TechItem techItem) {
-    Thread thread = new Thread(() -> {
-      techDAO.add(techItem);
-      shouldCloseScreen.postValue(true);
-    });
-    thread.start();
+    techDAO.add(techItem)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(() -> {
+          shouldCloseScreen.setValue(true);
+        });
+
   }
 }

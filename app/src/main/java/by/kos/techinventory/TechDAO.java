@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import io.reactivex.rxjava3.core.Completable;
 import java.util.List;
 
 @Dao
 interface TechDAO {
 
   @Insert
-  void add(TechItem techItem);
+  Completable add(TechItem techItem);
 
   @Query("DELETE FROM tech WHERE id = :id")
   void remove(int id);
