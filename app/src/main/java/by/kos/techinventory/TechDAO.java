@@ -12,12 +12,12 @@ import java.util.List;
 interface TechDAO {
 
   @Insert
-  Completable add(TechItem techItem);
+  void add(TechItem techItem);
 
   @Query("DELETE FROM tech WHERE id = :id")
-  Completable remove(int id);
+  void remove(int id);
 
   @Query("SELECT * FROM tech")
-  Single<List<TechItem>> getItems();
+  List<TechItem> getItems();
 
 }
