@@ -9,9 +9,9 @@ public class TechItem {
 
   @PrimaryKey(autoGenerate = true)
   private int id;
-  private String name;
-  private String invent;
-  private int condition;
+  private final String name;
+  private final String invent;
+  private final int condition;
 
   public TechItem(int id, String name, String invent, int condition) {
     this.id = id;

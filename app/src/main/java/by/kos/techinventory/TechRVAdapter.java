@@ -77,9 +77,9 @@ public class TechRVAdapter extends RecyclerView.Adapter<TechViewHolder> {
 
   class TechViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView tvTechItem;
-    private TextView tvSerialData;
-    private TextView tvConditionData;
+    private final TextView tvTechItem;
+    private final TextView tvSerialData;
+    private final TextView tvConditionData;
 
     public TechViewHolder(@NonNull View itemView) {
       super(itemView);

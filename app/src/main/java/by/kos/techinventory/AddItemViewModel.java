@@ -1,6 +1,7 @@
 package by.kos.techinventory;
 
 import android.app.Application;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -27,16 +28,14 @@ public class AddItemViewModel extends AndroidViewModel {
   }
 
   public void saveTech(TechItem techItem) {
-    Disposable disposable = saveTechRx(techItem).subscribeOn(Schedulers.io())
+    Disposable disposable = techDAO.add(techItem)
+        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(() -> shouldCloseScreen.setValue(true));
+        .subscribe(() -> shouldCloseScreen.setValue(true), throwable -> {
+          shouldCloseScreen.setValue(true);
+          Log.d("AddItemViewModel", "Error saving item");
+        });
     compositeDisposable.add(disposable);
-  }
-
-  private Completable saveTechRx(TechItem item) {
-    return Completable.fromAction(() -> {
-      techDAO.add(item);
-    });
   }
 
   @Override
